@@ -10,4 +10,7 @@ mixed HbA1c || stratum:
 
 * full model
 
-mixed HbA1c i.sex i.race i.education i.income i.age || stratum:, baselevels
+mixed HbA1c i.sex i.race i.education i.income i.age || stratum:
+
+
+

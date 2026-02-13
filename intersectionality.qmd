@@ -1,5 +1,5 @@
 ---
-title: "A Rough Draft Conversation About MAIHDA"
+title: "An \\color{red}{Early Days Rough Draft} Conversation About MAIHDA"
 subtitle: "Multilevel Analysis Of Individual Heterogeneity And Discriminatory Accuracy"
 author: "Andy Grogan-Kaylor"
 date: "today"
@@ -7,10 +7,26 @@ format:
   pdf:
     toc: true
     number-sections: true
+    fig-pos: H 
 bibliography: intersectionality.bib
+csl: apa.csl
+filters:
+  - highlight-text
 ---
 
 # Inspirations
+
+```{r}
+#| echo: false
+#| output: false
+
+library(Statamarkdown)
+
+# stataexe <- "/Applications/StataNow/"
+# 
+# knitr::opts_chunk$set(engine.path=list(stata=stataexe))
+
+```
 
 Conceptual inspiration comes from sources such as @Cho2013, @Cesaire1956, @Martin-Baro1998, @Montero2009, @Antweiler2016, @Stage2014, and @Scharrer2021.
 
@@ -80,11 +96,75 @@ ggsave("multilevel.png")
 
 # The Basic Idea Of MAIHDA
 
+::: {.callout-tip}
+## Key Ideas
+
+The key ideas are as follows:
+
+1. A *traditional* approach would ask us to generate multiple interaction terms to explore interactions e.g. $sex \times race \times education \times age$ as well as all of the lower level 2 and 3 -way interactions. Upon first glance this seems unwieldy, though in a future discussion, we could talk about how some software (e.g. Stata) makes this approach less unwieldy than it might initially appear.
+2. In contrast, **MAIHDA** uses combinations of variables to generate *strata* which are then treated as the levels in a multilevel model.
+:::
+
+# Get The Data
+
+```{stata, collectcode=TRUE}
+
+use "TutorialData.dta" // get the data
+
+describe // describe the data
+
+```
+
+
 # Generating The Strata
 
-# Empty Model
+```{stata, collectcode=TRUE}
+
+generate stratum = 10000*sex + 1000*race + 100*education + 10*income + 1*age
+
+```
+
+# Empty or ANOVA Model
+
+## Model
+
+```{stata, collectcode=TRUE}
+
+mixed HbA1c || stratum: // ANOVA model
+
+```
+
+## IntraClass Correlation Coefficient
+
+::: {.callout-tip}
+## The ICC
+
+The ICC answers the question:  "How much clustering is there?"
+:::
+
+
+```{stata}
+
+estat icc // intraclass correlation coefficient
+
+```
 
 # Full Model
+
+```{stata}
+
+mixed HbA1c i.sex i.race i.education i.income i.age || stratum:
+
+```
+
+# Discussion Questions
+
+1. Clarifying what we mean by intersectionality before moving to quantitative approaches
+2. What MAIHDA adds beyond conventional interaction models. (Do interactions fail to capture these ideas? Are multiple interactions so hard to test?)
+3. The role of multilevel modeling and partial pooling
+4. MAIHDA in descriptive vs. causal contexts
+5. Broader model evaluation and potential extensions of the method (CF testing multiple interactions and maximal models ([https://agrogan1.github.io/multilevel/Bayesian-and-frequentist-MLM/Bayesian-and-frequentist-MLM.html#maximal-models](https://agrogan1.github.io/multilevel/Bayesian-and-frequentist-MLM/Bayesian-and-frequentist-MLM.html#maximal-models)))
+
 
 ::: {.content-visible when-format="pdf"}
 # References
