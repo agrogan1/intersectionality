@@ -28,6 +28,8 @@ library(Statamarkdown)
 
 ```
 
+> "My conception of the universal is that of a universal enriched by all that is particular, a universal enriched by every particular: the deepening and coexistence of all particulars." [@Cesaire1956]
+
 Conceptual inspiration comes from sources such as @Cho2013, @Cesaire1956, @Martin-Baro1998, @Montero2009, @Antweiler2016, @Stage2014, and @Scharrer2021.
 
 Substantively and practically, this handout depends **heavily** on the ideas, example code, and example data set in @Evans2024.
