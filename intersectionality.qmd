@@ -10,6 +10,8 @@ format:
     fig-pos: H 
 bibliography: intersectionality.bib
 csl: apa.csl
+nocite: |
+  @Grogan-Kaylor2026
 filters:
   - highlight-text
 ---
