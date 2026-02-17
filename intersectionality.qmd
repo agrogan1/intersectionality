@@ -155,6 +155,12 @@ estat icc // intraclass correlation coefficient
 
 # Full Model
 
+::: {.callout-tip}
+## One Perspective
+
+The results indicate a balance of main effects of structural factors and intersectionality.
+:::
+
 ```{stata}
 
 mixed HbA1c i.sex i.race i.education i.income i.age || stratum:
