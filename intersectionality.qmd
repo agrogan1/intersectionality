@@ -1,9 +1,13 @@
 ---
-title: "An \\color{red}{Early Days Rough Draft} Conversation About MAIHDA"
+title: "An **Early Days Rough Draft** Conversation About MAIHDA"
 subtitle: "Multilevel Analysis Of Individual Heterogeneity And Discriminatory Accuracy"
 author: "Andy Grogan-Kaylor"
 date: "today"
 format: 
+  html: 
+    toc: true
+    number-sections: true
+    lightbox: true
   pdf:
     toc: true
     number-sections: true
@@ -92,6 +96,7 @@ ggplot(mydata,
                         option = "turbo") +
   labs(title = "A Basic Multilevel Model",
        subtitle = "Every Group Has Its Own Regression Line", 
+       x = "x",
        caption = mycaption)
 
 ggsave("multilevel.png")
@@ -111,6 +116,9 @@ The key ideas are as follows:
 
 # Get The Data
 
+::: {.panel-tabset group="language"}
+## Stata
+
 ```{stata, collectcode=TRUE}
 
 use "TutorialData.dta" // get the data
@@ -119,24 +127,76 @@ describe // describe the data
 
 ```
 
+## R
+
+```{r}
+#| echo: true
+#| eval: true
+
+library(haven) # read Stata
+
+TutorialData <- read_dta("TutorialData.dta")
+
+```
+:::
 
 # Generating The Strata
 
+::: {.panel-tabset group="language"}
+## Stata
+
 ```{stata, collectcode=TRUE}
 
-generate stratum = 10000*sex + 1000*race + 100*education + 10*income + 1*age
+generate stratum = 10000*sex + 1000*race + 100*education + 10*income + 1*age // create stratum variable
 
 ```
+
+## R
+
+```{r}
+#| echo: true
+#| eval: true
+#| message: false
+
+library(dplyr) # data wrangling
+
+TutorialData <- TutorialData %>% 
+  mutate(stratum = 10000*sex + 
+           1000*race + 
+           100*education + 
+           10*income + 
+           1*age) # create stratum variable
+
+```
+:::
 
 # Empty or ANOVA Model
 
 ## Model
+
+::: {.panel-tabset group="language"}
+### Stata
 
 ```{stata, collectcode=TRUE}
 
 mixed HbA1c || stratum: // ANOVA model
 
 ```
+
+### R
+
+```{r}
+#| echo: true
+#| eval: true
+
+library(lme4)
+
+fit1 <- lmer(HbA1c ~ (1 | stratum), data = TutorialData)
+
+summary(fit1)
+
+```
+:::
 
 ## IntraClass Correlation Coefficient
 
@@ -146,12 +206,25 @@ mixed HbA1c || stratum: // ANOVA model
 The ICC answers the question:  "How much clustering is there?"
 :::
 
+::: {.panel-tabset group="language"}
+### Stata
 
 ```{stata}
 
 estat icc // intraclass correlation coefficient
 
 ```
+
+### R
+
+```{r}
+#| echo: true
+#| eval: true
+
+performance::icc(fit1) # ICC
+
+```
+:::
 
 # Full Model
 
@@ -161,11 +234,35 @@ estat icc // intraclass correlation coefficient
 The results indicate a balance of main effects of structural factors and intersectionality.
 :::
 
+::: {.panel-tabset group="language"}
+## Stata 
+
 ```{stata}
 
 mixed HbA1c i.sex i.race i.education i.income i.age || stratum:
 
 ```
+
+## R
+
+```{r}
+#| echo: true
+#| eval: true
+
+library(lme4)
+
+TutorialData$sex <- factor(TutorialData$sex)
+TutorialData$race <- factor(TutorialData$race)
+TutorialData$education <- factor(TutorialData$education)
+TutorialData$income <- factor(TutorialData$income)
+TutorialData$age <- factor(TutorialData$age)
+
+fit1 <- lmer(HbA1c ~ sex + race + education + income + age + (1 | stratum), data = TutorialData)
+
+summary(fit1)
+
+```
+:::
 
 # Discussion Questions
 
