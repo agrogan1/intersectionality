@@ -12,10 +12,13 @@ format:
     toc: true
     number-sections: true
     fig-pos: H 
+css: intersectionality.css
 bibliography: intersectionality.bib
 csl: apa.csl
 nocite: |
   @Grogan-Kaylor2026
+citation:
+  url: https://agrogan1.github.io/intersectionality/intersectionality.html
 filters:
   - highlight-text
 ---
