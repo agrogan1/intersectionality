@@ -16,7 +16,7 @@ css: intersectionality.css
 bibliography: intersectionality.bib
 csl: apa.csl
 nocite: |
-  @Grogan-Kaylor2026
+  @Grogan-Kaylor2026, @Merlo2026
 citation:
   url: https://agrogan1.github.io/intersectionality/intersectionality.html
 filters:
